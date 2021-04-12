@@ -5,9 +5,15 @@
 #include <QDebug>
 #include <QtMultimedia>
 #include <QMediaPlayer>
+#include <QMediaPlaylist>
 #include <QModelIndex>
 #include <QFileSystemModel>
 #include <QDir>
+#include <QDirIterator>
+#include <QSettings>
+#include <QVariant>
+#include <QString>
+#include <QVector>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -27,10 +33,13 @@ private slots:
 private:
     Ui::Widget *ui;
     QMediaPlayer *player;
+    QMediaPlaylist *defaultPlaylist;
 
     QFileSystemModel dirModel;
     QFileSystemModel fileModel;
 
     void init();
+    void load();
+    void save();
 };
 #endif // WIDGET_H
