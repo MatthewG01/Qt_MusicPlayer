@@ -28,15 +28,12 @@ public:
     ~Widget();
 
 private slots:
-    void on_directoryView_activated(const QModelIndex &index);
+    void on_play_clicked();
 
 private:
     Ui::Widget *ui;
     QMediaPlayer *player;
     QMediaPlaylist *defaultPlaylist;
-
-    QFileSystemModel dirModel;
-    QFileSystemModel fileModel;
 
     void init();
     void load();

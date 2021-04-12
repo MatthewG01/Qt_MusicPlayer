@@ -13,24 +13,6 @@
   <property name="windowTitle">
    <string>Widget</string>
   </property>
-  <widget class="QWidget" name="layoutWidget_2">
-   <property name="geometry">
-    <rect>
-     <x>91</x>
-     <y>181</y>
-     <width>520</width>
-     <height>194</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QTreeView" name="directoryView"/>
-    </item>
-    <item>
-     <widget class="QListView" name="fileView"/>
-    </item>
-   </layout>
-  </widget>
   <widget class="QListWidget" name="selectMusic">
    <property name="geometry">
     <rect>
@@ -54,7 +36,7 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>210</x>
@@ -137,7 +119,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>130</x>
