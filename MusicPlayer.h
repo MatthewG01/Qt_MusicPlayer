@@ -7,13 +7,15 @@
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
 #include <QModelIndex>
-#include <QFileSystemModel>
 #include <QDir>
 #include <QDirIterator>
 #include <QSettings>
 #include <QVariant>
 #include <QString>
 #include <QVector>
+
+#include <QUrl>
+#include <QFileSystemModel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -28,7 +30,8 @@ public:
     ~Widget();
 
 private slots:
-    void on_play_clicked();
+
+    void on_pushButton_clicked();
 
 private:
     Ui::Widget *ui;
@@ -36,7 +39,6 @@ private:
     QMediaPlaylist *defaultPlaylist;
 
     void init();
-    void load();
-    void save();
+    //QMediaPlaylist newPlaylist();
 };
 #endif // WIDGET_H

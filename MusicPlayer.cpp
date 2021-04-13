@@ -11,23 +11,27 @@ Widget::Widget(QWidget *parent)
     init();
     //load();
 
-    player = new QMediaPlayer(this);
+
 
 }
 
 Widget::~Widget()
 {
     delete ui;
+    delete (player);
+    delete (defaultPlaylist);
 }
 
 void Widget::init()
 {
+    player = new QMediaPlayer(this);
     defaultPlaylist = new QMediaPlaylist(this);
-    player->setPlaylist(defaultPlaylist);
+
 
     QDirIterator music("../MP3 Files", QDir::Files);
     while (music.hasNext())
     {
+        music.next();
         ui->selectMusic->addItem(music.fileName());
         mp3Files.append(music.filePath());
     }
@@ -37,21 +41,16 @@ void Widget::init()
         defaultPlaylist->addMedia(QUrl(mp3Files[i]));
     }
 
-}
-
-void Widget::load()
-{
-
-}
-
-void Widget::save()
-{
-
-}
-
-
-void Widget::on_play_clicked()
-{
     player->setPlaylist(defaultPlaylist);
+
+
+}
+
+
+
+
+
+void Widget::on_pushButton_clicked()
+{
     player->play();
 }
