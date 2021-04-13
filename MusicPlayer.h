@@ -17,6 +17,8 @@
 #include <QUrl>
 #include <QFileSystemModel>
 
+#include "Playlist.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
 QT_END_NAMESPACE
@@ -31,14 +33,27 @@ public:
 
 private slots:
 
-    void on_pushButton_clicked();
+
+
+    void on_pause_clicked();
+
+    void on_skipBackButton_clicked();
+
+    void on_skipForwardButton_clicked();
+
+    void on_progressSlider_sliderMoved(int position);
+
+    void on_volumeSlider_sliderMoved(int position);
+
+    void on_play_clicked();
 
 private:
     Ui::Widget *ui;
     QMediaPlayer *player;
-    QMediaPlaylist *defaultPlaylist;
+    Playlist qPlaylist;
 
     void init();
-    //QMediaPlaylist newPlaylist();
+    Playlist newPlaylist();
+
 };
 #endif // WIDGET_H

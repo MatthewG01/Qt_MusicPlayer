@@ -19,14 +19,12 @@ Widget::~Widget()
 {
     delete ui;
     delete (player);
-    delete (defaultPlaylist);
 }
 
 void Widget::init()
 {
     player = new QMediaPlayer(this);
-    defaultPlaylist = new QMediaPlaylist(this);
-
+    qPlaylist = Playlist(this, "All Music");
 
     QDirIterator music("../MP3 Files", QDir::Files);
     while (music.hasNext())
@@ -38,19 +36,57 @@ void Widget::init()
 
     for (int i = 0; i < mp3Files.size(); i++)
     {
-        defaultPlaylist->addMedia(QUrl(mp3Files[i]));
+        qPlaylist.playlist->addMedia(QUrl(mp3Files[i]));
     }
+    ui->playlistTitle->setReadOnly(true);
+    ui->playlistTitle->insert(qPlaylist.playlistName);
+    player->setPlaylist(qPlaylist.playlist);
 
-    player->setPlaylist(defaultPlaylist);
+}
 
-
+Playlist Widget::newPlaylist()
+{
+    //Playlist creation code goes here
+    return Playlist(this);
 }
 
 
 
 
 
-void Widget::on_pushButton_clicked()
+
+void Widget::on_pause_clicked()
+{
+    //Need to add to this section to make pause button work as intended rather than stopping current song
+    //and going back to beginning of playlist/song
+    player->position();
+    player->pause();
+}
+
+void Widget::on_skipBackButton_clicked()
+{
+    //Allows you to skip as long as you don't go past the amount of songs in playlist
+    QMediaPlaylist().setCurrentIndex(QMediaPlaylist().currentIndex() - 1);
+}
+
+void Widget::on_skipForwardButton_clicked()
+{
+    //Allows you to skip song. Uses a CONSTANT so will have to check this works when new playlists are created.
+    (player->playlist())->next();
+
+}
+
+void Widget::on_progressSlider_sliderMoved(int position)
+{
+    player->setPosition(position);
+}
+
+void Widget::on_volumeSlider_sliderMoved(int position)
+{
+    player->setVolume(position);
+}
+
+void Widget::on_play_clicked()
 {
     player->play();
 }
