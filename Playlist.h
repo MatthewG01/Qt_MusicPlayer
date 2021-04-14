@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QString>
 #include <QMediaPlaylist>
+#include <QMediaContent>
 
 class Playlist
 {

@@ -47,6 +47,10 @@ private slots:
 
     void on_play_clicked();
 
+    void on_durationChanged(qint64 position);
+
+    void on_positionChanged(qint64 position);
+
 private:
     Ui::Widget *ui;
     QMediaPlayer *player;
