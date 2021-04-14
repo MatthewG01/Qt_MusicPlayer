@@ -82,6 +82,14 @@ void Widget::on_skipBackButton_clicked()
 {
     //Allows you to skip song. Uses a CONSTANT so will have to check this works when new playlists are created.
     (player->playlist())->previous();
+    ui->track->clear();
+
+    qDebug() << qPlaylist.playlist->currentIndex();
+
+    if (qPlaylist.playlist->currentIndex() < 0)
+        ui->track->insert(trackNames[qPlaylist.playlist->mediaCount() - 1]);
+    else
+        ui->track->insert(trackNames[qPlaylist.playlist->currentIndex()]);
 }
 
 void Widget::on_skipForwardButton_clicked()
@@ -89,7 +97,14 @@ void Widget::on_skipForwardButton_clicked()
     //Allows you to skip song. Uses a CONSTANT so will have to check this works when new playlists are created.
     (player->playlist())->next();
     ui->track->clear();
-    ui->track->insert(trackNames[qPlaylist.playlist->currentIndex()]);
+
+    qDebug() << qPlaylist.playlist->currentIndex();
+
+    if (qPlaylist.playlist->currentIndex() < 0)
+        ui->track->insert(trackNames[0]);
+    else
+        ui->track->insert(trackNames[qPlaylist.playlist->currentIndex()]);
+
 
 }
 
