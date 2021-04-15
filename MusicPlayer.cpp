@@ -3,6 +3,9 @@
 
 QVector<QString> mp3Files {};
 QVector<QString> trackNames {};
+QList<QListWidgetItem *> selectedTracks {};
+//QList<QListWidgetItem *> playlistTracks {};
+QVector<QString> selectedTrackNames {};
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
@@ -24,6 +27,8 @@ Widget::~Widget()
 
 void Widget::init()
 {
+
+
     player = new QMediaPlayer(this);
     qPlaylist = Playlist(this, "All Music");
 
@@ -40,6 +45,8 @@ void Widget::init()
     {
         qPlaylist.playlist->addMedia(QUrl(mp3Files[i]));
     }
+
+    ui->selectPlaylist->addItem(qPlaylist.playlistName);
 
     ui->playlistTitle->setReadOnly(true);
     ui->playlistTitle->insert(qPlaylist.playlistName);
@@ -58,7 +65,7 @@ void Widget::init()
 
 }
 
-Playlist Widget::newPlaylist()
+Playlist Widget::newPlaylist(QString newPlaylistName)
 {
     //Playlist creation code goes here
     return Playlist(this);
@@ -132,3 +139,30 @@ void Widget::on_play_clicked()
 {
     player->play();
 }
+
+void Widget::on_addToPlaylist_clicked()
+{
+
+    selectedTracks = ui->selectMusic->selectedItems();
+    for (int i = 0; i < selectedTracks.size(); i++)
+    {
+        //if(int test = QString::compare(selectedTrackNames[i], ui->playlistItems->findItems(selectedTrackNames[i], Qt::MatchExactly) != 0)
+            //Add nothing
+        //else
+            selectedTrackNames.append(selectedTracks[i]->text());
+            ui->playlistItems->addItem(selectedTrackNames[i]);
+    }
+
+    selectedTrackNames.clear();
+}
+
+void Widget::on_playlistSave_accepted()
+{
+    newPlaylist(ui->enteredName->text());
+}
+
+void Widget::on_playlistSave_rejected()
+{
+    ui->playlistItems->clear();
+}
+

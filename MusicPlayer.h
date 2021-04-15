@@ -1,6 +1,7 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+#include <Qt>
 #include <QWidget>
 #include <QDebug>
 #include <QtMultimedia>
@@ -13,6 +14,9 @@
 #include <QVariant>
 #include <QString>
 #include <QVector>
+#include <QDialogButtonBox>
+#include <QListWidgetItem>
+#include <QComboBox>
 
 #include <QUrl>
 #include <QFileSystemModel>
@@ -51,13 +55,19 @@ private slots:
 
     void on_positionChanged(qint64 position);
 
+    void on_playlistSave_accepted();
+
+    void on_addToPlaylist_clicked();
+
+    void on_playlistSave_rejected();
+
 private:
     Ui::Widget *ui;
     QMediaPlayer *player;
     Playlist qPlaylist;
 
     void init();
-    Playlist newPlaylist();
+    Playlist newPlaylist(QString newPlaylistName = "New Playlist");
 
 };
 #endif // WIDGET_H

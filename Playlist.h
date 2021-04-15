@@ -9,13 +9,14 @@
 class Playlist
 {
 public:
-    Playlist(QObject *Widget = nullptr, QString name = "default playlist");
+    Playlist(QObject *Widget = nullptr, QString name = "New Playlist");
 
     QString playlistName;
     QMediaPlaylist *playlist;
 
     void setName(QString name);
     QString getName();
+    QMediaPlaylist newPlaylist(QString newPlaylistName);
 };
 
 #endif // PLAYLIST_H

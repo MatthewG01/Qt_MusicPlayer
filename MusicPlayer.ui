@@ -16,17 +16,20 @@
   <widget class="QListWidget" name="selectMusic">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>70</x>
      <y>340</y>
      <width>256</width>
      <height>192</height>
     </rect>
    </property>
+   <property name="selectionMode">
+    <enum>QAbstractItemView::ExtendedSelection</enum>
+   </property>
   </widget>
-  <widget class="QDialogButtonBox" name="buttonBox_2">
+  <widget class="QDialogButtonBox" name="playlistSave">
    <property name="geometry">
     <rect>
-     <x>330</x>
+     <x>510</x>
      <y>540</y>
      <width>166</width>
      <height>21</height>
@@ -157,7 +160,7 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>70</x>
      <y>320</y>
      <width>221</width>
      <height>16</height>
@@ -167,10 +170,10 @@
     <string>Select from music below to make your playlist</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="enteredName">
    <property name="geometry">
     <rect>
-     <x>210</x>
+     <x>390</x>
      <y>540</y>
      <width>113</width>
      <height>21</height>
@@ -201,6 +204,65 @@
    </property>
    <property name="text">
     <string>Current Track</string>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="playlistItems">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>340</y>
+     <width>256</width>
+     <height>192</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="addToPlaylist">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>540</y>
+     <width>80</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="selectPlaylist">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>70</y>
+     <width>72</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>70</y>
+     <width>71</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Select Playlist</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="confirmSelected">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>70</y>
+     <width>80</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Confirm</string>
    </property>
   </widget>
  </widget>
