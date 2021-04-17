@@ -6,6 +6,7 @@ QVector<QString> trackNames {};
 QList<QListWidgetItem *> selectedTracks {};
 //QList<QListWidgetItem *> playlistTracks {};
 QVector<QString> selectedTrackNames {};
+QVector<QString> selectedTrackPaths {};
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
@@ -46,6 +47,9 @@ void Widget::init()
         qPlaylist.playlist->addMedia(QUrl(mp3Files[i]));
     }
 
+    qPlaylist.playlist->save(QUrl::fromLocalFile("../Playlists/All Music"), "m3u");
+    qDebug() << qPlaylist.playlist->save(QUrl::fromLocalFile("../Playlists/All Music"), "m3u");
+
     ui->selectPlaylist->addItem(qPlaylist.playlistName);
 
     ui->playlistTitle->setReadOnly(true);
@@ -68,7 +72,11 @@ void Widget::init()
 Playlist Widget::newPlaylist(QString newPlaylistName)
 {
     //Playlist creation code goes here
-    return Playlist(this);
+    //return Playlist(this);
+    for(int i = 0; i < selectedTrackNames.size(); i++)
+    {
+        selectedTrackPaths.append("../MP3 Files/" + selectedTrackNames[i]);
+    }
 }
 
 
