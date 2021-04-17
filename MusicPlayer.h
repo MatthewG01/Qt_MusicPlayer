@@ -23,6 +23,7 @@
 
 #include "Playlist.h"
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
 QT_END_NAMESPACE
@@ -61,13 +62,15 @@ private slots:
 
     void on_playlistSave_rejected();
 
+    void on_confirmSelected_clicked();
+
 private:
     Ui::Widget *ui;
     QMediaPlayer *player;
     Playlist qPlaylist;
 
     void init();
-    Playlist newPlaylist(QString newPlaylistName = "New Playlist");
+    Playlist newPlaylist(QString newPlaylistName);
 
 };
 #endif // WIDGET_H

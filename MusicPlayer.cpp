@@ -1,6 +1,7 @@
 #include "MusicPlayer.h"
 #include "ui_MusicPlayer.h"
 
+
 QVector<QString> mp3Files {};
 QVector<QString> trackNames {};
 QList<QListWidgetItem *> selectedTracks {};
@@ -72,11 +73,30 @@ void Widget::init()
 Playlist Widget::newPlaylist(QString newPlaylistName)
 {
     //Playlist creation code goes here
-    //return Playlist(this);
+
+    Playlist newPlaylist(nullptr, newPlaylistName);
+    newPlaylist.setName(newPlaylistName);
+
     for(int i = 0; i < selectedTrackNames.size(); i++)
     {
         selectedTrackPaths.append("../MP3 Files/" + selectedTrackNames[i]);
+        for(int j =0; j < selectedTrackNames.size(); j++)
+        {
+            newPlaylist.playlist->addMedia(QUrl(selectedTrackPaths[j]));
+        }
     }
+
+    ui->selectPlaylist->addItem(newPlaylist.getName());
+    ui->playlistTitle->clear();
+    ui->playlistTitle->insert(newPlaylist.getName());
+
+    newPlaylist.playlist->save(QUrl::fromLocalFile("../Playlists/" + newPlaylistName), "m3u");
+    qDebug() << newPlaylist.playlist->save((QUrl::fromLocalFile("../Playlists/" + newPlaylistName)), "m3u");
+
+    //player->setPlaylist(newPlaylist.playlist);
+
+    return Playlist(this);
+
 }
 
 
@@ -174,3 +194,13 @@ void Widget::on_playlistSave_rejected()
     ui->playlistItems->clear();
 }
 
+
+void Widget::on_confirmSelected_clicked()
+{
+    qPlaylist.playlist->clear();
+    qDebug () << qPlaylist.playlist->clear();
+    qPlaylist.playlist->load(QUrl::fromLocalFile("../Playlists/" + ui->selectPlaylist->currentText()), "m3u");
+    //qPlaylist.playlist->load(QUrl::fromLocalFile("../Playlists/All Music"), "m3u");
+    player->setPlaylist(qPlaylist.playlist);
+
+}
