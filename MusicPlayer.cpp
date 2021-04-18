@@ -5,7 +5,6 @@
 QVector<QString> mp3Files {};
 QVector<QString> trackNames {};
 QList<QListWidgetItem *> selectedTracks {};
-//QList<QListWidgetItem *> playlistTracks {};
 QVector<QString> selectedTrackNames {};
 QVector<QString> selectedTrackPaths {};
 
@@ -15,10 +14,6 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
     init();
-    //load();
-
-
-
 }
 
 Widget::~Widget()
@@ -30,10 +25,11 @@ Widget::~Widget()
 void Widget::init()
 {
 
-
+    //Creates a QMediaPlayer and a playlist containing All Music located in the MP3 Files folder
     player = new QMediaPlayer(this);
     qPlaylist = Playlist(this, "All Music");
 
+    //Populates the dropdown box with the names of playlists stored in Playlists folder
     QDirIterator combo("../Playlists", QDir::Files);
     while (combo.hasNext())
     {
@@ -41,7 +37,7 @@ void Widget::init()
         ui->selectPlaylist->addItem(combo.fileName().left(combo.fileName().size() - 4));
     }
 
-
+    //Adds tracks to the QMediaPlaylist by using files in the MP3 Files folder
     QDirIterator music("../MP3 Files", QDir::Files);
     while (music.hasNext())
     {
@@ -80,22 +76,21 @@ void Widget::init()
 
 Playlist Widget::newPlaylist(QString newPlaylistName)
 {
-    //Playlist creation code goes here
+    //Creates a new playlist named by the user
 
     Playlist newPlaylist(this, newPlaylistName);
     newPlaylist.setName(newPlaylistName);
+
+    //Takes the music selected by the user and populates the new playlist with the paths of the selected music
 
     for(int i = 0; i < selectedTrackNames.size(); i++)
     {
         selectedTrackPaths.append("../MP3 Files/" + selectedTrackNames[i]);
         newPlaylist.getPlaylist()->addMedia(QUrl(selectedTrackPaths[i]));
         qDebug() << selectedTrackPaths[i];
-        /*for(int j =0; j < selectedTrackNames.size(); j++)
-        {
-            newPlaylist.playlist->addMedia(QUrl(selectedTrackPaths[j]));
-        }*/
     }
 
+    //Clears the selected track names and paths so that they don't interfere with the next new playlist created by user
     selectedTrackNames.clear();
     selectedTrackPaths.clear();
 
@@ -105,8 +100,6 @@ Playlist Widget::newPlaylist(QString newPlaylistName)
 
     newPlaylist.getPlaylist()->save(QUrl::fromLocalFile("../Playlists/" + newPlaylistName + ".m3u"), "m3u");
     qDebug() << newPlaylist.getPlaylist()->save((QUrl::fromLocalFile("../Playlists/" + newPlaylistName + ".m3u")), "m3u");
-
-    //player->setPlaylist(newPlaylist.playlist);
 
     player->setPlaylist(newPlaylist.getPlaylist());
 
@@ -121,13 +114,12 @@ Playlist Widget::newPlaylist(QString newPlaylistName)
 
 void Widget::on_pause_clicked()
 {
-    player->position();
     player->pause();
 }
 
 void Widget::on_skipBackButton_clicked()
 {
-    //Allows you to skip song. Uses a CONSTANT so will have to check this works when new playlists are created.
+    //Allows you to skip song. Playlist will loop back around if you skip backwards at the beginning of the playlist
     (player->playlist())->previous();
     ui->track->clear();
 
@@ -141,7 +133,7 @@ void Widget::on_skipBackButton_clicked()
 
 void Widget::on_skipForwardButton_clicked()
 {
-    //Allows you to skip song. Uses a CONSTANT so will have to check this works when new playlists are created.
+    //Allows you to skip song. Playlist will loop back around if you skip forwards at the beginning of the playlist
     (player->playlist())->next();
     ui->track->clear();
 
@@ -182,13 +174,10 @@ void Widget::on_play_clicked()
 
 void Widget::on_addToPlaylist_clicked()
 {
-
+    //Takes the tracks selected by the user and adds them to the playlist
     selectedTracks = ui->selectMusic->selectedItems();
     for (int i = 0; i < selectedTracks.size(); i++)
     {
-        //if(int test = QString::compare(selectedTrackNames[i], ui->playlistItems->findItems(selectedTrackNames[i], Qt::MatchExactly) != 0)
-            //Add nothing
-        //else
             selectedTrackNames.append(selectedTracks[i]->text());
             ui->playlistItems->addItem(selectedTrackNames[i]);
     }
@@ -209,22 +198,14 @@ void Widget::on_playlistSave_rejected()
 
 void Widget::on_confirmSelected_clicked()
 {
+    //Loads the currently displayed playlist in the dropdown into the player, allowing user to confirm their playlist selection
     qPlaylist.getPlaylist()->clear();
     qDebug () << qPlaylist.getPlaylist()->clear();
-
-    //Playlist playlist = Playlist(this, "Test");
-
-    //playlist.playlist->clear();
 
     qPlaylist.getPlaylist()->load(QUrl::fromLocalFile("../Playlists/" + ui->selectPlaylist->currentText() + ".m3u"), "m3u");
     if(qPlaylist.getPlaylist()->error())
         qDebug() << qPlaylist.getPlaylist()->errorString();
 
-    //player->playlist()->load(QUrl::fromLocalFile("../Playlists/" + ui->selectPlaylist->currentText()), "m3u");
-    //qPlaylist.playlist->load(QUrl::fromLocalFile("../Playlists/" + ui->selectPlaylist->currentText()), "m3u");
     player->setPlaylist(qPlaylist.getPlaylist());
     qDebug() << "../Playlists/" + ui->selectPlaylist->currentText();
-
-
-
 }

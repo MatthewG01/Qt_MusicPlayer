@@ -11,9 +11,6 @@ class Playlist
 public:
     Playlist(QObject *Widget = nullptr, QString name = "New Playlist");
 
-    //Make variables private member variables?
-
-
     void setName(QString aName);
     QString getName();
 
@@ -21,9 +18,6 @@ public:
     QMediaPlaylist * getPlaylist();
 
     QMediaPlaylist newPlaylist(QString newPlaylistName);
-
-
-
 
 private:
     QString playlistName;

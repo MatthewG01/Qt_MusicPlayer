@@ -37,9 +37,6 @@ public:
     ~Widget();
 
 private slots:
-
-
-
     void on_pause_clicked();
 
     void on_skipBackButton_clicked();
