@@ -7,13 +7,23 @@ Playlist::Playlist(QObject *Widget, QString name)
 
 }
 
-void Playlist::setName(QString name)
+void Playlist::setName(QString aName)
 {
-    name = playlistName;
+    playlistName = aName;
 }
 
 QString Playlist::getName()
 {
     return playlistName;
+}
+
+void Playlist::setPlaylist(QMediaPlaylist *aPlaylist)
+{
+    playlist = aPlaylist;
+}
+
+QMediaPlaylist *Playlist::getPlaylist()
+{
+    return playlist;
 }
 

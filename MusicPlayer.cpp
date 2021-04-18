@@ -53,21 +53,21 @@ void Widget::init()
 
     for (int i = 0; i < mp3Files.size(); i++)
     {
-        qPlaylist.playlist->addMedia(QUrl(mp3Files[i]));
+        qPlaylist.getPlaylist()->addMedia(QUrl(mp3Files[i]));
     }
 
-    qPlaylist.playlist->save(QUrl::fromLocalFile("../Playlists/All Music.m3u"), "m3u");
-    qDebug() << qPlaylist.playlist->save(QUrl::fromLocalFile("../Playlists/All Music.m3u"), "m3u");
+    qPlaylist.getPlaylist()->save(QUrl::fromLocalFile("../Playlists/All Music.m3u"), "m3u");
+    qDebug() << qPlaylist.getPlaylist()->save(QUrl::fromLocalFile("../Playlists/All Music.m3u"), "m3u");
 
-    ui->selectPlaylist->addItem(qPlaylist.playlistName);
+    ui->selectPlaylist->addItem(qPlaylist.getName());
 
     ui->playlistTitle->setReadOnly(true);
-    ui->playlistTitle->insert(qPlaylist.playlistName);
-    player->setPlaylist(qPlaylist.playlist);
+    ui->playlistTitle->insert(qPlaylist.getName());
+    player->setPlaylist(qPlaylist.getPlaylist());
 
 
     ui->track->setReadOnly(true);
-    ui->track->insert(trackNames[qPlaylist.playlist->currentIndex()]);
+    ui->track->insert(trackNames[qPlaylist.getPlaylist()->currentIndex()]);
 
     /*Connects the QMediaPlayer signals for positionChanged and durationChanged to their corresponding widget
      *slots, allowing the user to use the position slider to determine where a song plays from. Referenced
@@ -88,7 +88,7 @@ Playlist Widget::newPlaylist(QString newPlaylistName)
     for(int i = 0; i < selectedTrackNames.size(); i++)
     {
         selectedTrackPaths.append("../MP3 Files/" + selectedTrackNames[i]);
-        newPlaylist.playlist->addMedia(QUrl(selectedTrackPaths[i]));
+        newPlaylist.getPlaylist()->addMedia(QUrl(selectedTrackPaths[i]));
         qDebug() << selectedTrackPaths[i];
         /*for(int j =0; j < selectedTrackNames.size(); j++)
         {
@@ -103,12 +103,12 @@ Playlist Widget::newPlaylist(QString newPlaylistName)
     ui->playlistTitle->clear();
     ui->playlistTitle->insert(newPlaylist.getName());
 
-    newPlaylist.playlist->save(QUrl::fromLocalFile("../Playlists/" + newPlaylistName + ".m3u"), "m3u");
-    qDebug() << newPlaylist.playlist->save((QUrl::fromLocalFile("../Playlists/" + newPlaylistName + ".m3u")), "m3u");
+    newPlaylist.getPlaylist()->save(QUrl::fromLocalFile("../Playlists/" + newPlaylistName + ".m3u"), "m3u");
+    qDebug() << newPlaylist.getPlaylist()->save((QUrl::fromLocalFile("../Playlists/" + newPlaylistName + ".m3u")), "m3u");
 
     //player->setPlaylist(newPlaylist.playlist);
 
-    player->setPlaylist(newPlaylist.playlist);
+    player->setPlaylist(newPlaylist.getPlaylist());
 
     return newPlaylist;
 
@@ -131,12 +131,12 @@ void Widget::on_skipBackButton_clicked()
     (player->playlist())->previous();
     ui->track->clear();
 
-    qDebug() << qPlaylist.playlist->currentIndex();
+    qDebug() << qPlaylist.getPlaylist()->currentIndex();
 
-    if (qPlaylist.playlist->currentIndex() < 0)
-        ui->track->insert(trackNames[qPlaylist.playlist->mediaCount() - 1]);
+    if (qPlaylist.getPlaylist()->currentIndex() < 0)
+        ui->track->insert(trackNames[qPlaylist.getPlaylist()->mediaCount() - 1]);
     else
-        ui->track->insert(trackNames[qPlaylist.playlist->currentIndex()]);
+        ui->track->insert(trackNames[qPlaylist.getPlaylist()->currentIndex()]);
 }
 
 void Widget::on_skipForwardButton_clicked()
@@ -145,12 +145,12 @@ void Widget::on_skipForwardButton_clicked()
     (player->playlist())->next();
     ui->track->clear();
 
-    qDebug() << qPlaylist.playlist->currentIndex();
+    qDebug() << qPlaylist.getPlaylist()->currentIndex();
 
-    if (qPlaylist.playlist->currentIndex() < 0)
+    if (qPlaylist.getPlaylist()->currentIndex() < 0)
         ui->track->insert(trackNames[0]);
     else
-        ui->track->insert(trackNames[qPlaylist.playlist->currentIndex()]);
+        ui->track->insert(trackNames[qPlaylist.getPlaylist()->currentIndex()]);
 
 
 }
@@ -209,20 +209,20 @@ void Widget::on_playlistSave_rejected()
 
 void Widget::on_confirmSelected_clicked()
 {
-    qPlaylist.playlist->clear();
-    qDebug () << qPlaylist.playlist->clear();
+    qPlaylist.getPlaylist()->clear();
+    qDebug () << qPlaylist.getPlaylist()->clear();
 
     //Playlist playlist = Playlist(this, "Test");
 
     //playlist.playlist->clear();
 
-    qPlaylist.playlist->load(QUrl::fromLocalFile("../Playlists/" + ui->selectPlaylist->currentText() + ".m3u"), "m3u");
-    if(qPlaylist.playlist->error())
-        qDebug() << qPlaylist.playlist->errorString();
+    qPlaylist.getPlaylist()->load(QUrl::fromLocalFile("../Playlists/" + ui->selectPlaylist->currentText() + ".m3u"), "m3u");
+    if(qPlaylist.getPlaylist()->error())
+        qDebug() << qPlaylist.getPlaylist()->errorString();
 
     //player->playlist()->load(QUrl::fromLocalFile("../Playlists/" + ui->selectPlaylist->currentText()), "m3u");
     //qPlaylist.playlist->load(QUrl::fromLocalFile("../Playlists/" + ui->selectPlaylist->currentText()), "m3u");
-    player->setPlaylist(qPlaylist.playlist);
+    player->setPlaylist(qPlaylist.getPlaylist());
     qDebug() << "../Playlists/" + ui->selectPlaylist->currentText();
 
 
