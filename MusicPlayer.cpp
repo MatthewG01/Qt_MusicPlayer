@@ -34,6 +34,14 @@ void Widget::init()
     player = new QMediaPlayer(this);
     qPlaylist = Playlist(this, "All Music");
 
+    QDirIterator combo("../Playlists", QDir::Files);
+    while (combo.hasNext())
+    {
+        combo.next();
+        ui->selectPlaylist->addItem(combo.fileName().left(combo.fileName().size() - 4));
+    }
+
+
     QDirIterator music("../MP3 Files", QDir::Files);
     while (music.hasNext())
     {
@@ -48,8 +56,8 @@ void Widget::init()
         qPlaylist.playlist->addMedia(QUrl(mp3Files[i]));
     }
 
-    qPlaylist.playlist->save(QUrl::fromLocalFile("../Playlists/All Music"), "m3u");
-    qDebug() << qPlaylist.playlist->save(QUrl::fromLocalFile("../Playlists/All Music"), "m3u");
+    qPlaylist.playlist->save(QUrl::fromLocalFile("../Playlists/All Music.m3u"), "m3u");
+    qDebug() << qPlaylist.playlist->save(QUrl::fromLocalFile("../Playlists/All Music.m3u"), "m3u");
 
     ui->selectPlaylist->addItem(qPlaylist.playlistName);
 
@@ -74,28 +82,35 @@ Playlist Widget::newPlaylist(QString newPlaylistName)
 {
     //Playlist creation code goes here
 
-    Playlist newPlaylist(nullptr, newPlaylistName);
+    Playlist newPlaylist(this, newPlaylistName);
     newPlaylist.setName(newPlaylistName);
 
     for(int i = 0; i < selectedTrackNames.size(); i++)
     {
         selectedTrackPaths.append("../MP3 Files/" + selectedTrackNames[i]);
-        for(int j =0; j < selectedTrackNames.size(); j++)
+        newPlaylist.playlist->addMedia(QUrl(selectedTrackPaths[i]));
+        qDebug() << selectedTrackPaths[i];
+        /*for(int j =0; j < selectedTrackNames.size(); j++)
         {
             newPlaylist.playlist->addMedia(QUrl(selectedTrackPaths[j]));
-        }
+        }*/
     }
+
+    selectedTrackNames.clear();
+    selectedTrackPaths.clear();
 
     ui->selectPlaylist->addItem(newPlaylist.getName());
     ui->playlistTitle->clear();
     ui->playlistTitle->insert(newPlaylist.getName());
 
-    newPlaylist.playlist->save(QUrl::fromLocalFile("../Playlists/" + newPlaylistName), "m3u");
-    qDebug() << newPlaylist.playlist->save((QUrl::fromLocalFile("../Playlists/" + newPlaylistName)), "m3u");
+    newPlaylist.playlist->save(QUrl::fromLocalFile("../Playlists/" + newPlaylistName + ".m3u"), "m3u");
+    qDebug() << newPlaylist.playlist->save((QUrl::fromLocalFile("../Playlists/" + newPlaylistName + ".m3u")), "m3u");
 
     //player->setPlaylist(newPlaylist.playlist);
 
-    return Playlist(this);
+    player->setPlaylist(newPlaylist.playlist);
+
+    return newPlaylist;
 
 }
 
@@ -106,9 +121,6 @@ Playlist Widget::newPlaylist(QString newPlaylistName)
 
 void Widget::on_pause_clicked()
 {
-    /*Need to add to this section to make pause button work as intended rather than stopping current song
-    *and going back to beginning of playlist/song
-    */
     player->position();
     player->pause();
 }
@@ -181,12 +193,12 @@ void Widget::on_addToPlaylist_clicked()
             ui->playlistItems->addItem(selectedTrackNames[i]);
     }
 
-    selectedTrackNames.clear();
+    selectedTracks.clear();
 }
 
 void Widget::on_playlistSave_accepted()
 {
-    newPlaylist(ui->enteredName->text());
+    qPlaylist = newPlaylist(ui->enteredName->text());
 }
 
 void Widget::on_playlistSave_rejected()
@@ -199,8 +211,20 @@ void Widget::on_confirmSelected_clicked()
 {
     qPlaylist.playlist->clear();
     qDebug () << qPlaylist.playlist->clear();
-    qPlaylist.playlist->load(QUrl::fromLocalFile("../Playlists/" + ui->selectPlaylist->currentText()), "m3u");
-    //qPlaylist.playlist->load(QUrl::fromLocalFile("../Playlists/All Music"), "m3u");
+
+    //Playlist playlist = Playlist(this, "Test");
+
+    //playlist.playlist->clear();
+
+    qPlaylist.playlist->load(QUrl::fromLocalFile("../Playlists/" + ui->selectPlaylist->currentText() + ".m3u"), "m3u");
+    if(qPlaylist.playlist->error())
+        qDebug() << qPlaylist.playlist->errorString();
+
+    //player->playlist()->load(QUrl::fromLocalFile("../Playlists/" + ui->selectPlaylist->currentText()), "m3u");
+    //qPlaylist.playlist->load(QUrl::fromLocalFile("../Playlists/" + ui->selectPlaylist->currentText()), "m3u");
     player->setPlaylist(qPlaylist.playlist);
+    qDebug() << "../Playlists/" + ui->selectPlaylist->currentText();
+
+
 
 }
