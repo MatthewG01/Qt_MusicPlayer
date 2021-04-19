@@ -47,9 +47,8 @@ void Widget::init()
     qDebug() << qPlaylist.getPlaylist()->save(QUrl::fromLocalFile("../Playlists/All Music.m3u"), "m3u");
 
     playlistNames.append(qPlaylist.getName());
-    playlistNames.removeDuplicates();
     ui->selectPlaylist->clear();
-    loadPlaylists();
+    loadPlaylistNames();
 
     ui->playlistTitle->setReadOnly(true);
     ui->playlistTitle->insert(qPlaylist.getName());
@@ -70,7 +69,6 @@ void Widget::init()
 Playlist Widget::newPlaylist(QString newPlaylistName)
 {
     //Creates a new playlist named by the user
-
     Playlist newPlaylist(this, newPlaylistName);
     newPlaylist.setName(newPlaylistName);
 
@@ -88,9 +86,8 @@ Playlist Widget::newPlaylist(QString newPlaylistName)
     selectedTrackPaths.clear();
 
     playlistNames.append(newPlaylist.getName());
-    playlistNames.removeDuplicates();
     ui->selectPlaylist->clear();
-    loadPlaylists();
+    loadPlaylistNames();
 
     ui->playlistTitle->clear();
     ui->playlistTitle->insert(newPlaylist.getName());
@@ -103,8 +100,9 @@ Playlist Widget::newPlaylist(QString newPlaylistName)
     return newPlaylist;
 }
 
-void Widget::loadPlaylists()
+void Widget::loadPlaylistNames()
 {
+    //Used to load existing playlist names and prevent duplicate playlists appearing in the dropdown box
     QDirIterator combo("../Playlists", QDir::Files);
     while (combo.hasNext())
     {
