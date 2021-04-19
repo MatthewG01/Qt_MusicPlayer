@@ -69,6 +69,7 @@ private:
 
     void init();
     Playlist newPlaylist(QString newPlaylistName);
+    void loadPlaylists();
 
 };
 #endif // WIDGET_H

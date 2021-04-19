@@ -28,14 +28,6 @@ void Widget::init()
     player = new QMediaPlayer(this);
     qPlaylist = Playlist(this, "All Music");
 
-    //Populates the dropdown box with the names of playlists stored in Playlists folder
-    QDirIterator combo("../Playlists", QDir::Files);
-    while (combo.hasNext())
-    {
-        combo.next();
-        ui->selectPlaylist->addItem(combo.fileName().left(combo.fileName().size() - 4));
-    }
-
     //Adds tracks to the QMediaPlaylist by using files in the MP3 Files folder
     QDirIterator music("../MP3 Files", QDir::Files);
     while (music.hasNext())
@@ -57,7 +49,7 @@ void Widget::init()
     playlistNames.append(qPlaylist.getName());
     playlistNames.removeDuplicates();
     ui->selectPlaylist->clear();
-    ui->selectPlaylist->addItems(playlistNames);
+    loadPlaylists();
 
     ui->playlistTitle->setReadOnly(true);
     ui->playlistTitle->insert(qPlaylist.getName());
@@ -98,7 +90,7 @@ Playlist Widget::newPlaylist(QString newPlaylistName)
     playlistNames.append(newPlaylist.getName());
     playlistNames.removeDuplicates();
     ui->selectPlaylist->clear();
-    ui->selectPlaylist->addItems(playlistNames);
+    loadPlaylists();
 
     ui->playlistTitle->clear();
     ui->playlistTitle->insert(newPlaylist.getName());
@@ -109,6 +101,23 @@ Playlist Widget::newPlaylist(QString newPlaylistName)
     player->setPlaylist(newPlaylist.getPlaylist());
 
     return newPlaylist;
+}
+
+void Widget::loadPlaylists()
+{
+    QDirIterator combo("../Playlists", QDir::Files);
+    while (combo.hasNext())
+    {
+        combo.next();
+        playlistNames.append(combo.fileName());
+        playlistNames.replaceInStrings(".m3u", "");
+        playlistNames.removeDuplicates();
+        ui->selectPlaylist->clear();
+        for (int i = 0; i < playlistNames.size(); i++)
+        {
+            ui->selectPlaylist->addItem(playlistNames[i]);
+        }
+    }
 }
 
 void Widget::on_pause_clicked()
