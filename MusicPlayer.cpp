@@ -1,12 +1,12 @@
 #include "MusicPlayer.h"
 #include "ui_MusicPlayer.h"
 
-
 QVector<QString> mp3Files {};
 QVector<QString> trackNames {};
 QList<QListWidgetItem *> selectedTracks {};
 QVector<QString> selectedTrackNames {};
 QVector<QString> selectedTrackPaths {};
+QStringList playlistNames {};
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
@@ -24,7 +24,6 @@ Widget::~Widget()
 
 void Widget::init()
 {
-
     //Creates a QMediaPlayer and a playlist containing All Music located in the MP3 Files folder
     player = new QMediaPlayer(this);
     qPlaylist = Playlist(this, "All Music");
@@ -55,7 +54,10 @@ void Widget::init()
     qPlaylist.getPlaylist()->save(QUrl::fromLocalFile("../Playlists/All Music.m3u"), "m3u");
     qDebug() << qPlaylist.getPlaylist()->save(QUrl::fromLocalFile("../Playlists/All Music.m3u"), "m3u");
 
-    ui->selectPlaylist->addItem(qPlaylist.getName());
+    playlistNames.append(qPlaylist.getName());
+    playlistNames.removeDuplicates();
+    ui->selectPlaylist->clear();
+    ui->selectPlaylist->addItems(playlistNames);
 
     ui->playlistTitle->setReadOnly(true);
     ui->playlistTitle->insert(qPlaylist.getName());
@@ -71,7 +73,6 @@ void Widget::init()
     */
     connect(player, &QMediaPlayer::positionChanged, this, &Widget::on_positionChanged);
     connect(player, &QMediaPlayer::durationChanged, this, &Widget::on_durationChanged);
-
 }
 
 Playlist Widget::newPlaylist(QString newPlaylistName)
@@ -94,7 +95,11 @@ Playlist Widget::newPlaylist(QString newPlaylistName)
     selectedTrackNames.clear();
     selectedTrackPaths.clear();
 
-    ui->selectPlaylist->addItem(newPlaylist.getName());
+    playlistNames.append(newPlaylist.getName());
+    playlistNames.removeDuplicates();
+    ui->selectPlaylist->clear();
+    ui->selectPlaylist->addItems(playlistNames);
+
     ui->playlistTitle->clear();
     ui->playlistTitle->insert(newPlaylist.getName());
 
@@ -104,13 +109,7 @@ Playlist Widget::newPlaylist(QString newPlaylistName)
     player->setPlaylist(newPlaylist.getPlaylist());
 
     return newPlaylist;
-
 }
-
-
-
-
-
 
 void Widget::on_pause_clicked()
 {
@@ -143,8 +142,6 @@ void Widget::on_skipForwardButton_clicked()
         ui->track->insert(trackNames[0]);
     else
         ui->track->insert(trackNames[qPlaylist.getPlaylist()->currentIndex()]);
-
-
 }
 
 void Widget::on_progressSlider_sliderMoved(int position)

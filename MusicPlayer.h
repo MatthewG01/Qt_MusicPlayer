@@ -5,21 +5,22 @@
 #include <QWidget>
 #include <QDebug>
 #include <QtMultimedia>
-#include <QMediaPlayer>
+#include <QMediaPlayer>     //May be able to just include QtMulitmedia and take out playlist and player
 #include <QMediaPlaylist>
 #include <QModelIndex>
 #include <QDir>
 #include <QDirIterator>
-#include <QSettings>
-#include <QVariant>
+#include <QSettings> //May be able to get rid of this
+#include <QVariant> //May be able to get rid of this
 #include <QString>
 #include <QVector>
 #include <QDialogButtonBox>
 #include <QListWidgetItem>
 #include <QComboBox>
+#include <QStringList>
 
 #include <QUrl>
-#include <QFileSystemModel>
+#include <QFileSystemModel> //May be able to get rid of this
 
 #include "Playlist.h"
 
