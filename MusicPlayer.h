@@ -18,6 +18,7 @@
 #include <QListWidgetItem>
 #include <QComboBox>
 #include <QStringList>
+#include <QMessageBox>
 
 #include <QUrl>
 #include <QFileSystemModel> //May be able to get rid of this
