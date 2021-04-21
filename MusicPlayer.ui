@@ -180,7 +180,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Enter Playlist Name</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLineEdit" name="track">

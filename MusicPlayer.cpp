@@ -207,13 +207,17 @@ void Widget::on_addToPlaylist_clicked()
 
 void Widget::on_playlistSave_accepted()
 {
-    if(ui->enteredName->hasAcceptableInput())
+    if(ui->playlistItems->count() == 0)
     {
-        qPlaylist = newPlaylist(ui->enteredName->text());
+        QMessageBox::critical(this, "Invalid", "Please add music to your playlist");
     }
-    else
+    else if(!ui->enteredName->hasAcceptableInput())
     {
         QMessageBox::critical(this, "Invalid", "Please enter a playlist name");
+    }
+    else if(ui->enteredName->hasAcceptableInput())
+    {
+        qPlaylist = newPlaylist(ui->enteredName->text());
     }
 }
 
