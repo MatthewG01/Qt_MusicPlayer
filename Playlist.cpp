@@ -21,8 +21,20 @@ void Playlist::setPlaylist(QMediaPlaylist *aPlaylist)
     playlist = aPlaylist;
 }
 
+void Playlist::setTracks(QVector<QString> tracksToSet)
+{
+    tracks = tracksToSet;
+}
+
+QString Playlist::getTrack(int index)
+{
+    return tracks[index];
+}
+
 QMediaPlaylist *Playlist::getPlaylist()
 {
     return playlist;
 }
+
+
 

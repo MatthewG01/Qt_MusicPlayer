@@ -84,9 +84,11 @@ Playlist Widget::newPlaylist(QString newPlaylistName)
 
     //Takes the music selected by the user and populates the new playlist with the paths of the selected music
 
+    qPlaylist.setTracks(selectedTrackNames);
+
     for(int i = 0; i < selectedTrackNames.size(); i++)
     {
-        playlistTracks.append(selectedTrackNames[i]);
+        //playlistTracks.append(selectedTrackNames[i]);
         selectedTrackPaths.append("../MP3 Files/" + selectedTrackNames[i]);
         newPlaylist.getPlaylist()->addMedia(QUrl(selectedTrackPaths[i]));
         qDebug() << selectedTrackPaths[i];
@@ -134,6 +136,8 @@ void Widget::loadPlaylistNames()
     }
 }
 
+
+
 void Widget::on_pause_clicked()
 {
     player->pause();
@@ -147,10 +151,12 @@ void Widget::on_skipBackButton_clicked()
 
     qDebug() << qPlaylist.getPlaylist()->currentIndex();
 
-    if (qPlaylist.getPlaylist()->currentIndex() < 0)
-        ui->track->insert(allTrackNames[qPlaylist.getPlaylist()->mediaCount() - 1]);
+    if (player->playlist()->currentIndex() < 0)
+        //ui->track->insert(allTrackNames[qPlaylist.getPlaylist()->mediaCount() - 1]);
+        ui->track->insert(qPlaylist.getTrack(player->playlist()->currentIndex() - 1));
     else
-        ui->track->insert(allTrackNames[qPlaylist.getPlaylist()->currentIndex()]);
+        ui->track->insert(qPlaylist.getTrack(player->playlist()->currentIndex()));
+        //ui->track->insert(allTrackNames[qPlaylist.getPlaylist()->currentIndex()]);
 }
 
 void Widget::on_skipForwardButton_clicked()
@@ -161,10 +167,11 @@ void Widget::on_skipForwardButton_clicked()
 
     qDebug() << qPlaylist.getPlaylist()->currentIndex();
 
-    if (qPlaylist.getPlaylist()->currentIndex() < 0)
-        ui->track->insert(allTrackNames[0]);
+    if (player->playlist()->currentIndex() < 0)
+        ui->track->insert(qPlaylist.getTrack(0));
     else
-        ui->track->insert(allTrackNames[qPlaylist.getPlaylist()->currentIndex()]);
+        ui->track->insert(qPlaylist.getTrack(player->playlist()->currentIndex()));
+        //ui->track->insert(allTrackNames[qPlaylist.getPlaylist()->currentIndex()]);
 }
 
 void Widget::on_progressSlider_sliderMoved(int position)

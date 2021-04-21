@@ -17,11 +17,15 @@ public:
     void setPlaylist(QMediaPlaylist *aPlaylist);
     QMediaPlaylist * getPlaylist();
 
+    void setTracks(QVector<QString> tracksToSet);
+    QString getTrack(int index);
+
     QMediaPlaylist newPlaylist(QString newPlaylistName);
 
 private:
     QString playlistName;
     QMediaPlaylist *playlist;
+    QVector<QString> tracks;
 };
 
 #endif // PLAYLIST_H
