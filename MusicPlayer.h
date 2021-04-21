@@ -19,6 +19,8 @@
 #include <QComboBox>
 #include <QStringList>
 #include <QMessageBox>
+#include <QValidator>
+#include <QRegularExpressionValidator>
 
 #include <QUrl>
 #include <QFileSystemModel> //May be able to get rid of this
@@ -67,6 +69,7 @@ private:
     Ui::Widget *ui;
     QMediaPlayer *player;
     Playlist qPlaylist;
+    QLineEdit *enteredName;
 
     void init();
     Playlist newPlaylist(QString newPlaylistName);

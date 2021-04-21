@@ -59,7 +59,12 @@ void Widget::init()
     ui->track->setReadOnly(true);
     ui->track->insert(allTrackNames[qPlaylist.getPlaylist()->currentIndex()]);
 
-    ui->enteredName->setInputMask("AAAAAnAAAAAAAAnAAAAAA");
+    QValidator *validator = new QRegularExpressionValidator(this);
+    ui->enteredName->setValidator(validator);
+
+    enteredName = new QLineEdit;
+    QRegularExpression mask("[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$");
+    ui->enteredName->setValidator(new QRegularExpressionValidator(mask, this));
     ui->enteredName->setPlaceholderText("Enter Playlist Name");
 
 
