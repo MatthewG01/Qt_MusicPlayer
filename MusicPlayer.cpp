@@ -44,6 +44,8 @@ void Widget::init()
         qPlaylist.getPlaylist()->addMedia(QUrl(mp3Files[i]));
     }
 
+    qPlaylist.setTracks(allTrackNames);
+
     qPlaylist.getPlaylist()->save(QUrl::fromLocalFile("../Playlists/All Music.m3u"), "m3u");
     qDebug() << qPlaylist.getPlaylist()->save(QUrl::fromLocalFile("../Playlists/All Music.m3u"), "m3u");
 
@@ -55,9 +57,8 @@ void Widget::init()
     ui->playlistTitle->insert(qPlaylist.getName());
     player->setPlaylist(qPlaylist.getPlaylist());
 
-
     ui->track->setReadOnly(true);
-    ui->track->insert(allTrackNames[qPlaylist.getPlaylist()->currentIndex()]);
+    ui->track->insert(qPlaylist.getTrack(0));
 
     QValidator *validator = new QRegularExpressionValidator(this);
     ui->enteredName->setValidator(validator);
@@ -84,8 +85,6 @@ Playlist Widget::newPlaylist(QString newPlaylistName)
 
     //Takes the music selected by the user and populates the new playlist with the paths of the selected music
 
-    qPlaylist.setTracks(selectedTrackNames);
-
     for(int i = 0; i < selectedTrackNames.size(); i++)
     {
         //playlistTracks.append(selectedTrackNames[i]);
@@ -93,6 +92,8 @@ Playlist Widget::newPlaylist(QString newPlaylistName)
         newPlaylist.getPlaylist()->addMedia(QUrl(selectedTrackPaths[i]));
         qDebug() << selectedTrackPaths[i];
     }
+
+    newPlaylist.setTracks(selectedTrackNames);
 
     playlistNames.append(newPlaylist.getName());
     ui->selectPlaylist->clear();
@@ -149,14 +150,16 @@ void Widget::on_skipBackButton_clicked()
     (player->playlist())->previous();
     ui->track->clear();
 
-    qDebug() << qPlaylist.getPlaylist()->currentIndex();
+    qDebug() << player->playlist()->currentIndex();
 
-    if (player->playlist()->currentIndex() < 0)
-        //ui->track->insert(allTrackNames[qPlaylist.getPlaylist()->mediaCount() - 1]);
-        ui->track->insert(qPlaylist.getTrack(player->playlist()->currentIndex() - 1));
+    if (qPlaylist.getPlaylist()->currentIndex() < 0)
+    {
+        ui->track->insert(qPlaylist.getTrack(qPlaylist.getPlaylist()->mediaCount() - 1));
+    }
     else
-        ui->track->insert(qPlaylist.getTrack(player->playlist()->currentIndex()));
-        //ui->track->insert(allTrackNames[qPlaylist.getPlaylist()->currentIndex()]);
+    {
+        ui->track->insert(qPlaylist.getTrack(qPlaylist.getPlaylist()->currentIndex()));
+    }
 }
 
 void Widget::on_skipForwardButton_clicked()
@@ -165,13 +168,16 @@ void Widget::on_skipForwardButton_clicked()
     (player->playlist())->next();
     ui->track->clear();
 
-    qDebug() << qPlaylist.getPlaylist()->currentIndex();
+    qDebug() << player->playlist()->currentIndex();
 
-    if (player->playlist()->currentIndex() < 0)
+    if (qPlaylist.getPlaylist()->currentIndex() < 0)
+    {
         ui->track->insert(qPlaylist.getTrack(0));
+    }
     else
-        ui->track->insert(qPlaylist.getTrack(player->playlist()->currentIndex()));
-        //ui->track->insert(allTrackNames[qPlaylist.getPlaylist()->currentIndex()]);
+    {
+        ui->track->insert(qPlaylist.getTrack(qPlaylist.getPlaylist()->currentIndex()));
+    }
 }
 
 void Widget::on_progressSlider_sliderMoved(int position)
