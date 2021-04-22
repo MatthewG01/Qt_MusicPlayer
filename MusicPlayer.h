@@ -21,6 +21,11 @@
 #include <QMessageBox>
 #include <QValidator>
 #include <QRegularExpressionValidator>
+#include <QMediaObject>
+#include <QMediaMetaData>  //May be able to delete
+#include <QMediaService>  //May be able to delete
+#include <QFile>
+#include <QTextStream>
 
 #include <QUrl>
 #include <QFileSystemModel> //May be able to get rid of this

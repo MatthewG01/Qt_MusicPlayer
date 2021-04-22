@@ -8,6 +8,10 @@ QVector<QString> selectedTrackNames {};
 QVector<QString> selectedTrackPaths {};
 QStringList playlistNames {};
 QVector<QString> playlistTracks {};
+QString filename {};
+QString item {};
+
+
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
@@ -45,6 +49,16 @@ void Widget::init()
     }
 
     qPlaylist.setTracks(allTrackNames);
+
+    filename = "../Playlist Contents/" + qPlaylist.getName();
+    QFile file(filename + ".txt");
+    file.remove();
+    for (int i = 0; i < allTrackNames.size(); i++)
+    {
+        file.open(QIODevice::Append);
+        QTextStream out(&file);
+        out << allTrackNames[i] + "\n";
+    }
 
     qPlaylist.getPlaylist()->save(QUrl::fromLocalFile("../Playlists/All Music.m3u"), "m3u");
     qDebug() << qPlaylist.getPlaylist()->save(QUrl::fromLocalFile("../Playlists/All Music.m3u"), "m3u");
@@ -94,7 +108,15 @@ Playlist Widget::newPlaylist(QString newPlaylistName)
     }
 
     newPlaylist.setTracks(selectedTrackNames);
-
+    filename = "../Playlist Contents/" + newPlaylist.getName();
+    QFile file(filename + ".txt");
+    file.remove();
+    for (int i = 0; i < selectedTrackNames.size(); i++)
+    {
+        file.open(QIODevice::Append);
+        QTextStream out(&file);
+        out << selectedTrackNames[i] + "\n";
+    }
     playlistNames.append(newPlaylist.getName());
     ui->selectPlaylist->clear();
     loadPlaylistNames();
@@ -212,14 +234,25 @@ void Widget::on_addToPlaylist_clicked()
     for (int i = 0; i < selectedTracks.size(); i++)
     {
             selectedTrackNames.append(selectedTracks[i]->text());
-            ui->playlistItems->addItem(selectedTrackNames[i]);
+            ui->playlistItems->addItem(selectedTracks[i]->text());
     }
 
     selectedTracks.clear();
+
 }
 
 void Widget::on_playlistSave_accepted()
 {
+    ui->playlistItems->count();
+
+    for (int i = 0; i < ui->playlistItems->count(); i++)
+    {
+        item = (ui->playlistItems->item(i)->text());
+        ui->playlistItems->addItem(item);
+    }
+
+    qDebug() << ui->playlistItems->count();
+
     if(ui->playlistItems->count() == 0)
     {
         QMessageBox::critical(this, "Invalid", "Please add music to your playlist");
@@ -237,6 +270,8 @@ void Widget::on_playlistSave_accepted()
 void Widget::on_playlistSave_rejected()
 {
     ui->playlistItems->clear();
+    ui->selectMusic->clearSelection();
+    selectedTrackNames.clear();
 }
 
 
@@ -247,6 +282,12 @@ void Widget::on_confirmSelected_clicked()
     qDebug () << qPlaylist.getPlaylist()->clear();
 
     qPlaylist.getPlaylist()->load(QUrl::fromLocalFile("../Playlists/" + ui->selectPlaylist->currentText() + ".m3u"), "m3u");
+
+    player->playlist()->currentMedia();
+
+
+    ui->track->clear();
+    ui->track->insert(qPlaylist.getTrack(0));
     if(qPlaylist.getPlaylist()->error())
         qDebug() << qPlaylist.getPlaylist()->errorString();
 
