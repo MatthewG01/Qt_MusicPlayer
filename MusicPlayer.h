@@ -1,37 +1,11 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
-#include <Qt>
-#include <QWidget>
-#include <QDebug>
-#include <QtMultimedia>
-#include <QMediaPlayer>     //May be able to just include QtMulitmedia and take out playlist and player
-#include <QMediaPlaylist>
-#include <QModelIndex>
-#include <QDir>
-#include <QDirIterator>
-#include <QSettings> //May be able to get rid of this
-#include <QVariant> //May be able to get rid of this
-#include <QString>
-#include <QVector>
-#include <QDialogButtonBox>
-#include <QListWidgetItem>
-#include <QComboBox>
-#include <QStringList>
-#include <QMessageBox>
-#include <QValidator>
-#include <QRegularExpressionValidator>
-#include <QMediaObject>
-#include <QMediaMetaData>  //May be able to delete
-#include <QMediaService>  //May be able to delete
-#include <QFile>
-#include <QTextStream>
-
-#include <QUrl>
-#include <QFileSystemModel> //May be able to get rid of this
-
 #include "Playlist.h"
 
+#include <QtMultimedia>
+#include <QListWidgetItem>
+#include <QMessageBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
