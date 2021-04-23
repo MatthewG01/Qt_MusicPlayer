@@ -291,9 +291,10 @@ void Widget::on_confirmSelected_clicked()
     QFile file(filename + ".txt");
     file.open(QIODevice::ReadOnly);
     QTextStream in(&file);
-    while (!file.atEnd())
+    while (!in.atEnd())
     {
         songs.append(in.readLine());
+        qDebug() << songs;
     }
     file.close();
 
@@ -304,4 +305,6 @@ void Widget::on_confirmSelected_clicked()
 
     player->setPlaylist(qPlaylist.getPlaylist());
     qDebug() << "../Playlists/" + ui->selectPlaylist->currentText();
+
+    qPlaylist.setTracks(songs);
 }
