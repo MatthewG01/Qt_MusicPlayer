@@ -10,6 +10,9 @@ QStringList playlistNames {};
 QVector<QString> playlistTracks {};
 QString filename {};
 QString item {};
+QVector<QString> songs {};
+
+
 
 
 
@@ -282,11 +285,20 @@ void Widget::on_confirmSelected_clicked()
 
     qPlaylist.getPlaylist()->load(QUrl::fromLocalFile("../Playlists/" + ui->selectPlaylist->currentText() + ".m3u"), "m3u");
 
-    player->playlist()->currentMedia();
-
-
     ui->track->clear();
-    ui->track->insert(qPlaylist.getTrack(0));
+    songs.clear();
+    filename = "../Playlist Contents/" + ui->selectPlaylist->currentText();
+    QFile file(filename + ".txt");
+    file.open(QIODevice::ReadOnly);
+    QTextStream in(&file);
+    while (!file.atEnd())
+    {
+        songs.append(in.readLine());
+    }
+    file.close();
+
+    ui->track->insert(songs[0]);
+
     if(qPlaylist.getPlaylist()->error())
         qDebug() << qPlaylist.getPlaylist()->errorString();
 
