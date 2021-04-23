@@ -7,264 +7,171 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>849</height>
+    <height>633</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Widget</string>
   </property>
-  <widget class="QListWidget" name="selectMusic">
-   <property name="geometry">
-    <rect>
-     <x>70</x>
-     <y>340</y>
-     <width>256</width>
-     <height>192</height>
-    </rect>
-   </property>
-   <property name="selectionMode">
-    <enum>QAbstractItemView::ExtendedSelection</enum>
-   </property>
-  </widget>
-  <widget class="QDialogButtonBox" name="playlistSave">
-   <property name="geometry">
-    <rect>
-     <x>510</x>
-     <y>540</y>
-     <width>166</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="skipForwardButton">
-   <property name="geometry">
-    <rect>
-     <x>480</x>
-     <y>260</y>
-     <width>80</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Skip Forward</string>
-   </property>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>280</x>
-     <y>260</y>
-     <width>168</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <layout class="QFormLayout" name="formLayout_2">
-    <item row="0" column="0">
-     <widget class="QPushButton" name="play">
-      <property name="text">
-       <string>Play</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QPushButton" name="pause">
-      <property name="text">
-       <string>Pause</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QPushButton" name="skipBackButton">
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>260</y>
-     <width>80</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Skip Back</string>
-   </property>
-  </widget>
-  <widget class="QWidget" name="layoutWidget_2">
-   <property name="geometry">
-    <rect>
-     <x>280</x>
-     <y>210</y>
-     <width>171</width>
-     <height>38</height>
-    </rect>
-   </property>
-   <layout class="QFormLayout" name="formLayout">
-    <item row="0" column="0">
-     <widget class="QLabel" name="progressLabel">
-      <property name="text">
-       <string>Progress</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QSlider" name="progressSlider">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="volumeLabel">
-      <property name="text">
-       <string>Volume</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QSlider" name="volumeSlider">
-      <property name="value">
-       <number>99</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QLineEdit" name="playlistTitle">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>100</y>
-     <width>113</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>130</x>
-     <y>100</y>
-     <width>91</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Current Playlist</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>70</x>
-     <y>320</y>
-     <width>221</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Select from music below to make your playlist</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="enteredName">
-   <property name="geometry">
-    <rect>
-     <x>390</x>
-     <y>540</y>
-     <width>113</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="track">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>130</y>
-     <width>113</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>130</x>
-     <y>130</y>
-     <width>91</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Current Track</string>
-   </property>
-  </widget>
-  <widget class="QListWidget" name="playlistItems">
-   <property name="geometry">
-    <rect>
-     <x>390</x>
-     <y>340</y>
-     <width>256</width>
-     <height>192</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="addToPlaylist">
-   <property name="geometry">
-    <rect>
-     <x>240</x>
-     <y>540</y>
-     <width>80</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Add</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="selectPlaylist">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>70</y>
-     <width>91</width>
-     <height>22</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>130</x>
-     <y>70</y>
-     <width>71</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Select Playlist</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="confirmSelected">
-   <property name="geometry">
-    <rect>
-     <x>320</x>
-     <y>70</y>
-     <width>80</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Confirm</string>
-   </property>
-  </widget>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Select Playlist</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="3">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="skipBackButton">
+       <property name="text">
+        <string>Skip Back</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="play">
+       <property name="text">
+        <string>Play</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pause">
+       <property name="text">
+        <string>Pause</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="skipForwardButton">
+       <property name="text">
+        <string>Skip Forward</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Current Track</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QPushButton" name="confirmSelected">
+     <property name="text">
+      <string>Confirm</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="2">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Select from music below to make your playlist</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QListWidget" name="selectMusic">
+       <property name="selectionMode">
+        <enum>QAbstractItemView::ExtendedSelection</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="addToPlaylist">
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="5" column="2">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Music to be added to playlist</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QListWidget" name="playlistItems"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="enteredName">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="playlistSave">
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="playlistTitle"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Current Playlist</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QComboBox" name="selectPlaylist"/>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="track"/>
+   </item>
+   <item row="3" column="1">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QSlider" name="progressSlider">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="progressLabel">
+       <property name="text">
+        <string>Progress</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSlider" name="volumeSlider">
+       <property name="value">
+        <number>99</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="volumeLabel">
+       <property name="text">
+        <string>Volume</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

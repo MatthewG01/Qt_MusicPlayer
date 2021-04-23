@@ -45,7 +45,22 @@ public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
 
+    QVector<QString> allMP3Files {};
+    QVector<QString> allTrackNames {};
+    QVector<QString> selectedTrackNames {};
+    QVector<QString> selectedTrackPaths {};
+    QVector<QString> songs {};
+
+    QList<QListWidgetItem *> selectedTracks {};
+
+    QStringList playlistNames {};
+
+    QString filename {};
+    QString item {};
+
 private slots:
+    void on_play_clicked();
+
     void on_pause_clicked();
 
     void on_skipBackButton_clicked();
@@ -55,8 +70,6 @@ private slots:
     void on_progressSlider_sliderMoved(int position);
 
     void on_volumeSlider_sliderMoved(int position);
-
-    void on_play_clicked();
 
     void on_durationChanged(qint64 position);
 
@@ -79,6 +92,5 @@ private:
     void init();
     Playlist newPlaylist(QString newPlaylistName);
     void loadPlaylistNames();
-
 };
 #endif // WIDGET_H

@@ -1,21 +1,6 @@
 #include "MusicPlayer.h"
 #include "ui_MusicPlayer.h"
 
-QVector<QString> mp3Files {};
-QVector<QString> allTrackNames {};
-QList<QListWidgetItem *> selectedTracks {};
-QVector<QString> selectedTrackNames {};
-QVector<QString> selectedTrackPaths {};
-QStringList playlistNames {};
-QVector<QString> playlistTracks {};
-QString filename {};
-QString item {};
-QVector<QString> songs {};
-
-
-
-
-
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
@@ -30,6 +15,7 @@ Widget::~Widget()
     delete (player);
 }
 
+//Initialisation function which runs as soon as the program is run by the user
 void Widget::init()
 {
     //Creates a QMediaPlayer and a playlist containing All Music located in the MP3 Files folder
@@ -43,29 +29,28 @@ void Widget::init()
         music.next();
         ui->selectMusic->addItem(music.fileName());
         allTrackNames.append(music.fileName());
-        mp3Files.append(music.filePath());
+        allMP3Files.append(music.filePath());
     }
-
-    for (int i = 0; i < mp3Files.size(); i++)
+    for (int i = 0; i < allMP3Files.size(); i++)
     {
-        qPlaylist.getPlaylist()->addMedia(QUrl(mp3Files[i]));
+        qPlaylist.getPlaylist()->addMedia(QUrl(allMP3Files[i]));
     }
-
     qPlaylist.setTracks(allTrackNames);
 
+    //Saves the playlist contents to a txt file so that contents can be retrieved
     filename = "../Playlist Contents/" + qPlaylist.getName();
-    QFile file(filename + ".txt");
-    file.remove();
+    QFile playlistContents(filename + ".txt");
+    playlistContents.remove();
     for (int i = 0; i < allTrackNames.size(); i++)
     {
-        file.open(QIODevice::Append);
-        QTextStream out(&file);
-        out << allTrackNames[i] + "\n";
+        playlistContents.open(QIODevice::Append);
+        QTextStream write(&playlistContents);
+        write << allTrackNames[i] + "\n";
     }
-
     qPlaylist.getPlaylist()->save(QUrl::fromLocalFile("../Playlists/All Music.m3u"), "m3u");
     qDebug() << qPlaylist.getPlaylist()->save(QUrl::fromLocalFile("../Playlists/All Music.m3u"), "m3u");
 
+    //Saves the playlist names so they can be displayed in a dropdown combo box
     playlistNames.append(qPlaylist.getName());
     ui->selectPlaylist->clear();
     loadPlaylistNames();
@@ -77,9 +62,11 @@ void Widget::init()
     ui->track->setReadOnly(true);
     ui->track->insert(qPlaylist.getTrack(0));
 
+    /*Validator used to prevent the user from entering a playlist name which is blank or contains special characters.
+     * Code for the mask variable used in the validator was referenced from slackwing on stackoverflow, see declaration.
+     */
     QValidator *validator = new QRegularExpressionValidator(this);
     ui->enteredName->setValidator(validator);
-
     enteredName = new QLineEdit;
     QRegularExpression mask("[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$");
     ui->enteredName->setValidator(new QRegularExpressionValidator(mask, this));
@@ -94,6 +81,7 @@ void Widget::init()
     connect(player, &QMediaPlayer::durationChanged, this, &Widget::on_durationChanged);
 }
 
+//Function that creates new playlists each time the user clicks save after adding music and giving their playlist a name
 Playlist Widget::newPlaylist(QString newPlaylistName)
 {
     //Creates a new playlist named by the user
@@ -101,25 +89,26 @@ Playlist Widget::newPlaylist(QString newPlaylistName)
     newPlaylist.setName(newPlaylistName);
 
     //Takes the music selected by the user and populates the new playlist with the paths of the selected music
-
     for(int i = 0; i < selectedTrackNames.size(); i++)
     {
-        //playlistTracks.append(selectedTrackNames[i]);
         selectedTrackPaths.append("../MP3 Files/" + selectedTrackNames[i]);
         newPlaylist.getPlaylist()->addMedia(QUrl(selectedTrackPaths[i]));
         qDebug() << selectedTrackPaths[i];
     }
-
     newPlaylist.setTracks(selectedTrackNames);
+
+    //Saves the playlist contents to a txt file so that contents can be retrieved
     filename = "../Playlist Contents/" + newPlaylist.getName();
-    QFile file(filename + ".txt");
-    file.remove();
+    QFile playlistContents(filename + ".txt");
+    playlistContents.remove();
     for (int i = 0; i < selectedTrackNames.size(); i++)
     {
-        file.open(QIODevice::Append);
-        QTextStream out(&file);
-        out << selectedTrackNames[i] + "\n";
+        playlistContents.open(QIODevice::Append);
+        QTextStream write(&playlistContents);
+        write << selectedTrackNames[i] + "\n";
     }
+
+    //Saves the new playlist names so they can be displayed in a dropdown combo box
     playlistNames.append(newPlaylist.getName());
     ui->selectPlaylist->clear();
     loadPlaylistNames();
@@ -139,14 +128,12 @@ Playlist Widget::newPlaylist(QString newPlaylistName)
     selectedTrackNames.clear();
     selectedTrackPaths.clear();
 
-
-
     return newPlaylist;
 }
 
+//Used to load existing playlist names and prevent duplicate playlists appearing in the dropdown box
 void Widget::loadPlaylistNames()
-{
-    //Used to load existing playlist names and prevent duplicate playlists appearing in the dropdown box
+{   
     QDirIterator names("../Playlists", QDir::Files);
     while (names.hasNext())
     {
@@ -162,16 +149,19 @@ void Widget::loadPlaylistNames()
     }
 }
 
-
+void Widget::on_play_clicked()
+{
+    player->play();
+}
 
 void Widget::on_pause_clicked()
 {
     player->pause();
 }
 
+//Allows you to skip song. Playlist will loop back around if you skip backwards at the beginning of the playlist
 void Widget::on_skipBackButton_clicked()
 {
-    //Allows you to skip song. Playlist will loop back around if you skip backwards at the beginning of the playlist
     (player->playlist())->previous();
     ui->track->clear();
 
@@ -180,6 +170,7 @@ void Widget::on_skipBackButton_clicked()
     if (qPlaylist.getPlaylist()->currentIndex() < 0)
     {
         ui->track->insert(qPlaylist.getTrack(qPlaylist.getPlaylist()->mediaCount() - 1));
+        (player->playlist())->previous();
     }
     else
     {
@@ -187,9 +178,9 @@ void Widget::on_skipBackButton_clicked()
     }
 }
 
+//Allows you to skip song. Playlist will loop back around if you skip forwards at the end of the playlist
 void Widget::on_skipForwardButton_clicked()
 {
-    //Allows you to skip song. Playlist will loop back around if you skip forwards at the beginning of the playlist
     (player->playlist())->next();
     ui->track->clear();
 
@@ -205,29 +196,28 @@ void Widget::on_skipForwardButton_clicked()
     }
 }
 
+//Referenced from Bryan Cairns VoidRealms tutorial
 void Widget::on_progressSlider_sliderMoved(int position)
 {
     player->setPosition(position);
 }
 
+//Referenced from Bryan Cairns VoidRealms tutorial
 void Widget::on_positionChanged(qint64 position)
 {
     ui->progressSlider->setValue(position);
 }
 
+//Referenced from Bryan Cairns VoidRealms tutorial
 void Widget::on_durationChanged(qint64 position)
 {
     ui->progressSlider->setMaximum(position);
 }
 
+//Referenced from Bryan Cairns VoidRealms tutorial
 void Widget::on_volumeSlider_sliderMoved(int position)
 {
     player->setVolume(position);
-}
-
-void Widget::on_play_clicked()
-{
-    player->play();
 }
 
 void Widget::on_addToPlaylist_clicked()
@@ -240,13 +230,11 @@ void Widget::on_addToPlaylist_clicked()
     }
 
     selectedTracks.clear();
-
 }
 
 void Widget::on_playlistSave_accepted()
 {
     ui->playlistItems->count();
-
     for (int i = 0; i < ui->playlistItems->count(); i++)
     {
         item = (ui->playlistItems->item(i)->text());
@@ -269,6 +257,7 @@ void Widget::on_playlistSave_accepted()
     }
 }
 
+//Clears the user selected tracks, allowing them to reconsider their choices
 void Widget::on_playlistSave_rejected()
 {
     ui->playlistItems->clear();
@@ -276,35 +265,39 @@ void Widget::on_playlistSave_rejected()
     selectedTrackNames.clear();
 }
 
-
+//Loads the currently displayed playlist in the dropdown into the player, allowing the user to confirm their playlist selection and listen to it
 void Widget::on_confirmSelected_clicked()
 {
-    //Loads the currently displayed playlist in the dropdown into the player, allowing user to confirm their playlist selection
     qPlaylist.getPlaylist()->clear();
     qDebug () << qPlaylist.getPlaylist()->clear();
 
     qPlaylist.getPlaylist()->load(QUrl::fromLocalFile("../Playlists/" + ui->selectPlaylist->currentText() + ".m3u"), "m3u");
 
+    //Accesses the currently selected playlists contents so they can be used to display track names
     ui->track->clear();
     songs.clear();
     filename = "../Playlist Contents/" + ui->selectPlaylist->currentText();
-    QFile file(filename + ".txt");
-    file.open(QIODevice::ReadOnly);
-    QTextStream in(&file);
-    while (!in.atEnd())
+    QFile playlistContents(filename + ".txt");
+    playlistContents.open(QIODevice::ReadOnly);
+    QTextStream read(&playlistContents);
+    while (!read.atEnd())
     {
-        songs.append(in.readLine());
+        songs.append(read.readLine());
         qDebug() << songs;
     }
-    file.close();
-
+    playlistContents.close();
     ui->track->insert(songs[0]);
 
+    //If the playlist can not be found, a message is displayed informing the user so they know to pick another playlist or create a new one
     if(qPlaylist.getPlaylist()->error())
+    {
+        QMessageBox::critical(this, "Error", "Playlist not found, select another playlist or create a new one.");
+        ui->selectPlaylist->removeItem(ui->selectPlaylist->currentIndex());
         qDebug() << qPlaylist.getPlaylist()->errorString();
+    }
 
+    //Sets the loaded playlist as the current playlist and sets its tracks using the songs contained in the corresponding playlist contents file for the playlist
     player->setPlaylist(qPlaylist.getPlaylist());
     qDebug() << "../Playlists/" + ui->selectPlaylist->currentText();
-
     qPlaylist.setTracks(songs);
 }

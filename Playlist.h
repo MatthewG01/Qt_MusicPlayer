@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QString>
-#include <QMediaPlaylist>   //May be able to get rid of some of these as they are already in MusicPlayer.h
+#include <QMediaPlaylist>
 #include <QMediaContent>
 
 class Playlist
