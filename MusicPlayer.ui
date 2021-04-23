@@ -36,7 +36,7 @@
     </rect>
    </property>
    <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
+    <set>QDialogButtonBox::Discard|QDialogButtonBox::Save</set>
    </property>
   </widget>
   <widget class="QPushButton" name="skipForwardButton">

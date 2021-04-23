@@ -233,7 +233,6 @@ void Widget::on_addToPlaylist_clicked()
     selectedTracks = ui->selectMusic->selectedItems();
     for (int i = 0; i < selectedTracks.size(); i++)
     {
-            selectedTrackNames.append(selectedTracks[i]->text());
             ui->playlistItems->addItem(selectedTracks[i]->text());
     }
 
@@ -248,7 +247,7 @@ void Widget::on_playlistSave_accepted()
     for (int i = 0; i < ui->playlistItems->count(); i++)
     {
         item = (ui->playlistItems->item(i)->text());
-        ui->playlistItems->addItem(item);
+        selectedTrackNames.append(item);
     }
 
     qDebug() << ui->playlistItems->count();
