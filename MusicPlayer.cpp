@@ -47,6 +47,8 @@ void Widget::init()
         QTextStream write(&playlistContents);
         write << allTrackNames[i] + "\n";
     }
+    playlistContents.close();
+
     qPlaylist.getPlaylist()->save(QUrl::fromLocalFile("../Playlists/All Music.m3u"), "m3u");
     qDebug() << qPlaylist.getPlaylist()->save(QUrl::fromLocalFile("../Playlists/All Music.m3u"), "m3u");
 
@@ -107,6 +109,7 @@ Playlist Widget::newPlaylist(QString newPlaylistName)
         QTextStream write(&playlistContents);
         write << selectedTrackNames[i] + "\n";
     }
+    playlistContents.close();
 
     //Saves the new playlist names so they can be displayed in a dropdown combo box
     playlistNames.append(newPlaylist.getName());
@@ -159,7 +162,7 @@ void Widget::on_pause_clicked()
     player->pause();
 }
 
-//Allows you to skip song. Playlist will loop back around if you skip backwards at the beginning of the playlist
+//Allows you to skip backwards in the playlist by one song. Playlist will loop back around if you skip backwards at the beginning of the playlist
 void Widget::on_skipBackButton_clicked()
 {
     (player->playlist())->previous();
@@ -178,7 +181,7 @@ void Widget::on_skipBackButton_clicked()
     }
 }
 
-//Allows you to skip song. Playlist will loop back around if you skip forwards at the end of the playlist
+//Allows you to skip song forward in the playlist by one song. Playlist will loop back around if you skip forwards at the end of the playlist
 void Widget::on_skipForwardButton_clicked()
 {
     (player->playlist())->next();
@@ -196,33 +199,33 @@ void Widget::on_skipForwardButton_clicked()
     }
 }
 
-//Referenced from Bryan Cairns VoidRealms tutorial
+//Referenced from Bryan Cairns VoidRealms tutorial, see declaration
 void Widget::on_progressSlider_sliderMoved(int position)
 {
     player->setPosition(position);
 }
 
-//Referenced from Bryan Cairns VoidRealms tutorial
+//Referenced from Bryan Cairns VoidRealms tutorial, see declaration
 void Widget::on_positionChanged(qint64 position)
 {
     ui->progressSlider->setValue(position);
 }
 
-//Referenced from Bryan Cairns VoidRealms tutorial
+//Referenced from Bryan Cairns VoidRealms tutorial, see declaration
 void Widget::on_durationChanged(qint64 position)
 {
     ui->progressSlider->setMaximum(position);
 }
 
-//Referenced from Bryan Cairns VoidRealms tutorial
+//Referenced from Bryan Cairns VoidRealms tutorial, see declaration
 void Widget::on_volumeSlider_sliderMoved(int position)
 {
     player->setVolume(position);
 }
 
+//Takes the tracks selected by the user and adds them to the playlist confirmation section (playlistItems)
 void Widget::on_addToPlaylist_clicked()
 {
-    //Takes the tracks selected by the user and adds them to the playlist
     selectedTracks = ui->selectMusic->selectedItems();
     for (int i = 0; i < selectedTracks.size(); i++)
     {
@@ -232,6 +235,7 @@ void Widget::on_addToPlaylist_clicked()
     selectedTracks.clear();
 }
 
+//Assigns playlistItems to selectedTrackNames to be used in newPlaylist(). Prevents user from creating an empty playlist or a nameless playlist
 void Widget::on_playlistSave_accepted()
 {
     ui->playlistItems->count();
@@ -257,7 +261,7 @@ void Widget::on_playlistSave_accepted()
     }
 }
 
-//Clears the user selected tracks, allowing them to reconsider their choices
+//Clears the user selected tracks in playlistItems, allowing them to reconsider their choices
 void Widget::on_playlistSave_rejected()
 {
     ui->playlistItems->clear();
